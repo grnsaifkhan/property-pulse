@@ -38,9 +38,70 @@ const PropertyAddForm = () => {
     }, []);
 
 
-    const handleChange = () => { }
-    const handleAmenitiesChange = () => { }
-    const handleImageChange = () => { }
+    const handleChange = (e) => { 
+      const {name , value} = e.target;
+
+      // check if nested property
+      if(name.includes('.')) {
+        const [outerKey, innerKey] = name.split('.');
+        setFields((prevFields) => ({
+          ...prevFields,
+          [outerKey]: {
+            ...prevFields[outerKey],
+            [innerKey]:value
+          }
+        }));
+      } else {
+        //not nested
+        setFields((prevFields) => ({
+          ...prevFields,
+          [name]:value
+        }))
+      }
+    }
+    const handleAmenitiesChange = (e) => { 
+      const {value, checked} = e.target;
+
+      //clone the current array
+      const updatedAmenites = [...fields.amenities];
+
+      if(checked) {
+        //Add value to array
+        updatedAmenites.push(value);
+      } else {
+        //remove value from array
+        const index = updatedAmenites.indexOf(value);
+
+        if(index !== -1) {
+          updatedAmenites.splice(index, 1);
+        }
+      }
+
+      //Update state with updated array
+      setFields((prevFields) => ({
+        ...prevFields,
+        amenities: updatedAmenites,
+      }));
+
+    }
+    const handleImageChange = (e) => { 
+
+      const {files} = e.target;
+
+      //clone images array
+      const updatedImages = [...fields.images];
+
+      //Add new files to the array
+      for (const file of files) {
+        updatedImages.push(file);
+
+        //update state with array of images
+        setFields((prevFields) => ({
+          ...prevFields,
+          images: updatedImages,
+        }));
+      }
+    }
 
 
   return ( mounted && (
@@ -319,7 +380,7 @@ const PropertyAddForm = () => {
             name="amenities"
             value="Dishwasher"
             className="mr-2"
-            checked={ fields.amenities.includes("amenity_dishwasher")}
+            checked={ fields.amenities.includes("Dishwasher")}
             onChange={handleAmenitiesChange}
           />
           <label htmlFor="amenity_dishwasher">Dishwasher</label>
