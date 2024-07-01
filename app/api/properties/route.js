@@ -49,7 +49,7 @@ export const POST = async (request) => {
             description: formData.get('description'),
             location: {
                 street: formData.get('location.street'),
-                stcityreet: formData.get('location.city'),
+                city: formData.get('location.city'),
                 state: formData.get('location.state'),
                 zipcode: formData.get('location.zipcode'),
             },
