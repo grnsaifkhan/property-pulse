@@ -20,6 +20,7 @@ const PropertyMap = ({property}) => {
     });
 
     const [loading, setLoading] = useState(true);
+    const [geoCodeError, setGeoCodeError] = useState(false);
 
 
     setDefaults({
@@ -30,19 +31,34 @@ const PropertyMap = ({property}) => {
 
     useEffect(() => {
        const fetchCoords = async () => {
-        // const res = await fromAddress(`${property.location.street} ${property.location.city} ${property.location.state} ${property.location.zipcode}`);
-        // const {lat, lng} =  res.results[0].geometry.location;
-        const {lat, lng} =  {lat:48.394570, lng:9.983070}; // using static data due to the unavailable google geolocation API
+        try {
+            // const res = await fromAddress(`${property.location.street} ${property.location.city} ${property.location.state} ${property.location.zipcode}`);
+            // const {lat, lng} =  res.results[0].geometry.location;
 
-        setLat(lat);
-        setLng(lng);
-        setVieWport({
-            ...viewport,
-            latitude: lat,
-            longitude: lng
-        })
+            // Check for results
+            // if(res.results.length === 0) {
+            //     //no result found
+            //     setGeoCodeError(true);
+            //     setLoading(false);
+            //     return;
+            // }
 
-        setLoading(false);
+            const {lat, lng} =  {lat:48.394570, lng:9.983070}; // using static data due to the unavailable google geolocation API
+
+            setLat(lat);
+            setLng(lng);
+            setVieWport({
+                ...viewport,
+                latitude: lat,
+                longitude: lng
+            })
+
+            setLoading(false);
+        } catch (error) {
+            console.log(error);
+            setGeoCodeError(true);
+            setLoading(false);
+        }
     };
 
     fetchCoords();
@@ -50,6 +66,11 @@ const PropertyMap = ({property}) => {
 
 
     if(loading) return <Spinner loading={loading}/>;
+
+    //Handle case where geocoding failed
+    if(geoCodeError) {
+        return <div className='text-xl'>No Location Data Found</div>
+    }
 
 
   return !loading && (
