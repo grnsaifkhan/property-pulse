@@ -14,7 +14,7 @@ export const POST = async (request) => {
 
         const sessionUser = await getSessionUser();
 
-        if(!session || !session.userId) {
+        if(!sessionUser || !sessionUser.userId) {
             return new Response('User ID is required', {
                 status: 401
             })
@@ -28,7 +28,7 @@ export const POST = async (request) => {
 
         //Check if property is bookmarked
 
-        let isBookmarked = user.bookmarks.include(propertyId);
+        let isBookmarked = user.bookmarks.includes(propertyId);
 
         let message;
 
