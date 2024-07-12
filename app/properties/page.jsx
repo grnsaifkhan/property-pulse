@@ -1,4 +1,5 @@
 import PropertyCard from '@/components/PropertyCard';
+import PropertySearchForm from '@/components/PropertySearchForm';
 import { fetchProperties } from '@/utils/requests';
 
 const PropertiesPage = async () => {
@@ -8,7 +9,16 @@ const PropertiesPage = async () => {
   //sort properties by date
   properties.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-  return (
+
+  return (<>
+    <section className="bg-blue-700 py-4">
+        <div className="max-w-7xl mx-auto px-4 flex flex-col
+        items-start sm:px-6 lg:px-8">
+            <PropertySearchForm/>
+        </div>
+    </section>
+    {
+        (
     // <!-- All Listings -->
     <section className="px-4 py-6">
       <div className="container-xl lg:container m-auto px-4 py-6">
@@ -23,7 +33,9 @@ const PropertiesPage = async () => {
         )}
       </div>
     </section>
-  )
+      )
+    }
+  </>)
 }
 
 export default PropertiesPage
