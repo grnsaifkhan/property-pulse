@@ -18,14 +18,14 @@ export const POST = async (request) => {
         const sessionUser = await getSessionUser();
 
         if(!sessionUser || !sessionUser.user) {
-            return new Response(Json.stringify({message: 'You must be logged in to send the message'}), {status: 401});
+            return new Response(JSON.stringify({message: 'You must be logged in to send the message'}), {status: 401});
         }
 
         const {user} = sessionUser;
 
         // Can not send message to self
         if (user.id === recipient) {
-            return new Response(Json.stringify({message: 'Can not send a message to yourself'}), {status: 400});
+            return new Response(JSON.stringify({message: 'Can not send a message to yourself'}), {status: 400});
         }
 
 
